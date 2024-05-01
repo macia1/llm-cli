@@ -1,0 +1,37 @@
+import sys
+import requests
+
+headers = {
+    "Content-Type": "application/json",
+    "Authorization": "Bearer ${YOU_API_KEY}"
+}
+
+data = {"messages": [],
+        "model": "mixtral-8x7b-32768"}
+
+def main():
+    print("输入 'q' 退出程序。")
+    while True:
+        user_input = input("You: ")
+        if user_input.lower() == "q":
+            print("exit.")
+            print(data)
+            sys.exit(0)
+
+        if user_input.lower() == "help":
+            print("----")
+            continue
+        u_q = {"role": "user","content": user_input}
+        data['messages'].append(u_q)
+        response = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=data,proxies=${YOU_SELF_PROXY})
+        if(response.status_code == 200):
+            result = response.json()['choices'][0]['message']['content']
+            print(f'Groq:{result}')
+            a_a = {"role": "assistant","content": result}
+            data['messages'].append(a_a)
+        else:
+            print("request fail...")
+        
+
+if __name__ == "__main__":
+    main()
