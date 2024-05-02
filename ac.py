@@ -13,7 +13,8 @@ def main(arg):
     user_input = arg
     while True:
         if user_input is not None:
-            print("You: " + ''.join(user_input))
+            user_input = ''.join(user_input)
+            print("You: " + user_input)
         else:
             user_input = input("You: ")
         if user_input.lower() == "q":
