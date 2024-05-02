@@ -39,5 +39,5 @@ def main(arg):
 if __name__ == "__main__":
     arg = None
     if len(sys.argv) > 1:
-        arg = sys.argv[1]
+        arg = sys.argv[:1]
     main(arg)
