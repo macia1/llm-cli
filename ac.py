@@ -7,13 +7,19 @@ headers = {
 }
 
 data = {"messages": [],
-        "model": "llama3-70b-8192"}
+        "model": "llama3-70b-8192",
+        "temperature": 1,
+        "max_tokens": 8192,
+        "top_p": 1,
+        "stream": False,
+        "stop": None
+}
 
 def main(arg):
     user_input = arg
     while True:
         if user_input is not None:
-            user_input = ''.join(user_input)
+            user_input = ' '.join(user_input)
             print("You: " + user_input)
         else:
             user_input = input("You: ")
