@@ -16,20 +16,27 @@ data = {"messages": [],
 }
 
 def main(arg):
-    user_input = arg
+    user_input = None
     while True:
-        if user_input is not None:
-            user_input = ' '.join(user_input)
+        if arg is not None:
+            user_input = ' '.join(arg)
+            arg = None
             print("You: " + user_input)
         else:
             user_input = input("You: ")
         if user_input.lower() == "q":
             print("exit.")
             sys.exit(0)
+        if user_input.lower() == "cls":
+            data['messages'] = []
+            continue
+        if user_input.lower() == 'info':
+            print(data)
+            continue
         u_q = {"role": "user","content": user_input}
         data['messages'].append(u_q)
         try:
-            response = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=data,proxies=${YOUR_PROXY})
+            response = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=data,proxies={"http": "127.0.0.1:17890", "https": "127.0.0.1:17890"})
             if(response.status_code == 200):
                 result = response.json()['choices'][0]['message']['content']
                 print(f'Groq:{result}')
@@ -40,7 +47,6 @@ def main(arg):
         except Exception as e:
             print("request exception...")
         finally:
-            user_input = None
             print()
         
 
