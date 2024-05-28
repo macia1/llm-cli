@@ -1,5 +1,6 @@
 import sys
 import requests
+import os
 
 headers = {
     "Content-Type": "application/json",
@@ -13,10 +14,10 @@ data = {"messages": [],
         "top_p": 1,
         "stream": False,
         "stop": None
-}
+        }
+
 
 def main(arg):
-    user_input = None
     while True:
         if arg is not None:
             user_input = ' '.join(arg)
@@ -29,18 +30,20 @@ def main(arg):
             sys.exit(0)
         if user_input.lower() == "cls":
             data['messages'] = []
+            os.system('cls' if os.name == 'nt' else 'clear')
             continue
         if user_input.lower() == 'info':
             print(data)
             continue
-        u_q = {"role": "user","content": user_input}
+        u_q = {"role": "user", "content": user_input}
         data['messages'].append(u_q)
         try:
-            response = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=data,proxies={"http": "127.0.0.1:17890", "https": "127.0.0.1:17890"})
-            if(response.status_code == 200):
+            response = requests.post("https://api.groq.com/openai/v1/chat/completions", headers=headers, json=data,
+                                     proxies={"http": "127.0.0.1:17890", "https": "127.0.0.1:17890"})
+            if (response.status_code == 200):
                 result = response.json()['choices'][0]['message']['content']
                 print(f'Groq:{result}')
-                a_a = {"role": "assistant","content": result}
+                a_a = {"role": "assistant", "content": result}
                 data['messages'].append(a_a)
             else:
                 print("request fail...")
@@ -48,7 +51,7 @@ def main(arg):
             print("request exception...")
         finally:
             print()
-        
+
 
 if __name__ == "__main__":
     arg = None
